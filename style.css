@@ -7,57 +7,91 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    touch-action: manipulation; /* スマホでのダブルタップ拡大を防ぐ */
 }
 
 .game-container {
     text-align: center;
+    padding: 10px;
 }
 
 h1 {
     color: #ffeb3b;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
 }
 
 .score-board {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
-.instruction {
-    font-size: 0.9rem;
-    color: #aaa;
-}
-
-/* 10x10のマップ */
+/* 10x10のマップ（スマホ画面でも収まりやすいサイズ） */
 .grid {
     display: grid;
-    grid-template-columns: repeat(10, 35px);
-    grid-template-rows: repeat(10, 35px);
+    grid-template-columns: repeat(10, 32px);
+    grid-template-rows: repeat(10, 32px);
     gap: 2px;
     justify-content: center;
     background-color: #000;
-    padding: 10px;
+    padding: 5px;
     border: 3px solid #2196f3;
     border-radius: 8px;
-    margin: 0 auto;
+    margin: 0 auto 15px auto;
 }
 
 .cell {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
-/* 壁のデザイン */
 .wall {
     background-color: #1976d2;
     border-radius: 4px;
 }
 
-button {
+/* スマホ用コントローラーのレイアウト */
+.controller {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.middle-btns {
+    display: flex;
+    gap: 60px; /* 左右のボタンの間隔を広げる */
+}
+
+.ctrl-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    background-color: #333;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: background 0.1s;
+}
+
+.ctrl-btn:active {
+    background-color: #555;
+    transform: scale(0.95);
+}
+
+/* もう一度遊ぶボタン */
+#restart-btn {
     background-color: #ffeb3b;
     border: none;
     padding: 10px 20px;
@@ -65,9 +99,8 @@ button {
     font-weight: bold;
     border-radius: 20px;
     cursor: pointer;
-    margin-top: 15px;
 }
 
-button:hover {
+#restart-btn:hover {
     background-color: #fdd835;
 }
