@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>パックマン風ゲーム</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,9 +11,21 @@
         <h1>🟡 パックマン風ゲーム 👻</h1>
         <div class="score-board">
             <p>スコア: <span id="score">0</span> 点</p>
-            <p class="instruction">矢印キー (↑ ↓ ← →) で操作してね！</p>
         </div>
+        
+        <!-- マップ -->
         <div id="grid" class="grid"></div>
+
+        <!-- スマホ用コントローラー -->
+        <div class="controller">
+            <button class="ctrl-btn" id="btn-up">⬆️</button>
+            <div class="middle-btns">
+                <button class="ctrl-btn" id="btn-left">⬅️</button>
+                <button class="ctrl-btn" id="btn-right">➡️</button>
+            </div>
+            <button class="ctrl-btn" id="btn-down">⬇️</button>
+        </div>
+
         <button id="restart-btn">もう一度遊ぶ</button>
     </div>
     <script src="script.js"></script>
