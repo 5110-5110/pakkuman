@@ -18,8 +18,8 @@ const layout = [
 
 const width = 10;
 let squares = [];
-let pacmanIndex = 11; // 初期位置
-let ghostIndex = 88;  // ゴーストの初期位置
+let pacmanIndex = 11;
+let ghostIndex = 88;
 let score = 0;
 let ghostTimer = null;
 let isGameOver = false;
@@ -43,38 +43,31 @@ function createBoard() {
         if (layout[i] === 1) {
             square.classList.add('wall');
         } else if (layout[i] === 0) {
-            square.textContent = '🟡'; // エサ（ドット）
+            square.textContent = '🟡';
         }
     }
 
-    // パックマンとゴーストの配置
-    squares[pacmanIndex].textContent = '😮'; // パックマン
-    squares[ghostIndex].textContent = '👻';  // ゴースト
+    squares[pacmanIndex].textContent = '😮';
+    squares[ghostIndex].textContent = '👻';
 
-    // ゴーストを定期的に動かす
     if (ghostTimer) clearInterval(ghostTimer);
-    ghostTimer = setInterval(moveGhost, 600);
+    ghostTimer = setInterval(moveGhost, 650);
 }
 
-// パックマンの操作（キーボード）
-function control(e) {
+// パックマンを動かす共通の関数
+function movePacman(direction) {
     if (isGameOver) return;
 
-    squares[pacmanIndex].textContent = ''; // 今の位置を消す
+    squares[pacmanIndex].textContent = '';
 
-    switch (e.key) {
-        case 'ArrowLeft':
-            if (pacmanIndex % width !== 0 && !squares[pacmanIndex - 1].classList.contains('wall')) pacmanIndex -= 1;
-            break;
-        case 'ArrowUp':
-            if (pacmanIndex - width >= 0 && !squares[pacmanIndex - width].classList.contains('wall')) pacmanIndex -= width;
-            break;
-        case 'ArrowRight':
-            if (pacmanIndex % width < width - 1 && !squares[pacmanIndex + 1].classList.contains('wall')) pacmanIndex += 1;
-            break;
-        case 'ArrowDown':
-            if (pacmanIndex + width < width * width && !squares[pacmanIndex + width].classList.contains('wall')) pacmanIndex += width;
-            break;
+    if (direction === 'left' && pacmanIndex % width !== 0 && !squares[pacmanIndex - 1].classList.contains('wall')) {
+        pacmanIndex -= 1;
+    } else if (direction === 'up' && pacmanIndex - width >= 0 && !squares[pacmanIndex - width].classList.contains('wall')) {
+        pacmanIndex -= width;
+    } else if (direction === 'right' && pacmanIndex % width < width - 1 && !squares[pacmanIndex + 1].classList.contains('wall')) {
+        pacmanIndex += 1;
+    } else if (direction === 'down' && pacmanIndex + width < width * width && !squares[pacmanIndex + width].classList.contains('wall')) {
+        pacmanIndex += width;
     }
 
     // エサを食べる判定
@@ -89,11 +82,25 @@ function control(e) {
         return;
     }
 
-    // 勝利判定（エサがなくなったらクリア）
     checkWin();
-
     squares[pacmanIndex].textContent = '😮';
 }
+
+// キーボード操作の連携
+function control(e) {
+    switch (e.key) {
+        case 'ArrowLeft': movePacman('left'); break;
+        case 'ArrowUp': movePacman('up'); break;
+        case 'ArrowRight': movePacman('right'); break;
+        case 'ArrowDown': movePacman('down'); break;
+    }
+}
+
+// 画面内のボタンタップ操作の連携
+document.getElementById('btn-left').addEventListener('click', () => movePacman('left'));
+document.getElementById('btn-up').addEventListener('click', () => movePacman('up'));
+document.getElementById('btn-right').addEventListener('click', () => movePacman('right'));
+document.getElementById('btn-down').addEventListener('click', () => movePacman('down'));
 
 // ゴーストの自動移動
 function moveGhost() {
@@ -102,14 +109,10 @@ function moveGhost() {
     const directions = [-1, +1, -width, +width];
     let direction = directions[Math.floor(Math.random() * directions.length)];
 
-    // 壁でなければ動く
     if (!squares[ghostIndex + direction].classList.contains('wall')) {
-        // 元の場所がエサだったか空だったかを戻す
         squares[ghostIndex].textContent = layout[ghostIndex] === 0 ? '🟡' : '';
-
         ghostIndex += direction;
 
-        // 衝突判定
         if (ghostIndex === pacmanIndex) {
             gameOver(false);
             return;
@@ -140,8 +143,7 @@ function checkWin() {
     }
 }
 
-document.addEventListener('keyup', control);
+document.addEventListener('keydown', control);
 restartBtn.addEventListener('click', createBoard);
 
-// ゲームスタート
 createBoard();
